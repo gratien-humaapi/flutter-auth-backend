@@ -11,15 +11,15 @@ router.get('/', todoActions.getTodos);
 router.get('/:userId', todoActions.getAllTodos);
 
 // to get a single todo
-router.get('/:userId/:todoId', todoActions.getTodo);
+router.get('/todo/:id', todoActions.getTodo);
 
 // to create a todo
 router.post('/', todoActions.createTodo);
 
 // to update the todo
-router.put('/:userId/:todoId', todoActions.updateTodo);
+router.put('/todo/:id', todoActions.updateTodo);
 
 // to delete the todo
-router.delete('/:userId/:todoId', todoActions.deleteTodo);
+router.delete('/todo/:id', todoActions.deleteTodo);
 
 module.exports = router;

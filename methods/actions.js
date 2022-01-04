@@ -4,7 +4,7 @@ var config = require('../config/dbconfig');
 
 var functions = {
     addNewUser: function (req, res) {
-        if ((!req.body.name) || (!req.body.password)|| (!req.body.email)) {
+        if ((!req.body.name) || (!req.body.email)|| (!req.body.password)) {
             res.json({succes: false, msg: 'Enter all fields'})
         } else {
             var newUser = User({
@@ -25,11 +25,10 @@ var functions = {
         User.findOne({
             name: req.body.name
         }, function (err, user) {
-            if(err, user) {
+            if(err) throw err
                 if (!user) {
                     res.status(403).send({success: false, msg: 'Authentication Failed, User not found'})
-                }
-            } else {
+                } else {
                 user.comparePassword(req.body.password, function (err, isMatch) {
                     if (isMatch && !err) {
                         var token = jwt.encode(user, config.secret)
@@ -46,7 +45,7 @@ var functions = {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0]=== 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
-            return res.json({success: true, msg: 'Hello' + decodedtoken.name, userId: decodedtoken.userId})
+            return res.json({success: true, msg: 'Hello' + decodedtoken.name, userId: decodedtoken._id, name: decodedtoken.name})
         } else {
             return res.json({success: false, msg: 'No Headers'})
         }
